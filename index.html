@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ripasso classi C++</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root {
+  --paper: #F3F6F8; --sheet: #FFFFFF; --field: #FFFFFF; --ink: #15202B; --ink-2: #4B5967; --rule: #D6DEE5; --rule-strong: #AEBBC7;
+  --teal: #0A7F98; --teal-ink: #06667B; --on-teal: #FFFFFF; --teal-soft: #E1F1F5;
+  --pen-red: #C2293C; --pen-blue: #2646A0; --amber: #B0650A;
+  --ok: #19774A; --ok-bg: #E2F3E9; --ko: #B3261E; --ko-bg: #FBE8E6; --warn: #8F5600; --warn-bg: #FFF3D9; --focus: #F2A900;
+  --code-bg: #F7F9FB; --code-line: #FFF3D9; --c-kw: #2646A0; --c-ty: #06667B; --c-str: #A0460A; --c-num: #C2293C; --c-com: #5E6E7D; --c-pre: #7A3E9D; --c-io: #19774A;
+  --term-bg: #15202B; --term-ink: #E3EAF0; --term-in: #F2C15E;
+  --f-display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --f-ui: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-code: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0D141B; --sheet: #141E28; --field: #0F1821; --ink: #E3EAF0; --ink-2: #A0B1C0; --rule: #273746; --rule-strong: #3C5063;
+    --teal: #3FB6CF; --teal-ink: #6FCDE1; --on-teal: #04222B; --teal-soft: #11313B;
+    --pen-red: #FF7C8B; --pen-blue: #9DB4FF; --amber: #F1A440;
+    --ok: #5ACF8E; --ok-bg: #11301F; --ko: #FF8C82; --ko-bg: #3B1714; --warn: #F2C15E; --warn-bg: #30250B; --focus: #FFC940;
+    --code-bg: #0F1821; --code-line: #30250B; --c-kw: #9DB4FF; --c-ty: #6FCDE1; --c-str: #F1A440; --c-num: #FF7C8B; --c-com: #8193A3; --c-pre: #D3A6F0; --c-io: #5ACF8E;
+    --term-bg: #05090D; --term-ink: #E3EAF0; --term-in: #F2C15E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0D141B; --sheet: #141E28; --field: #0F1821; --ink: #E3EAF0; --ink-2: #A0B1C0; --rule: #273746; --rule-strong: #3C5063;
+  --teal: #3FB6CF; --teal-ink: #6FCDE1; --on-teal: #04222B; --teal-soft: #11313B;
+  --pen-red: #FF7C8B; --pen-blue: #9DB4FF; --amber: #F1A440;
+  --ok: #5ACF8E; --ok-bg: #11301F; --ko: #FF8C82; --ko-bg: #3B1714; --warn: #F2C15E; --warn-bg: #30250B; --focus: #FFC940;
+  --code-bg: #0F1821; --code-line: #30250B; --c-kw: #9DB4FF; --c-ty: #6FCDE1; --c-str: #F1A440; --c-num: #FF7C8B; --c-com: #8193A3; --c-pre: #D3A6F0; --c-io: #5ACF8E;
+  --term-bg: #05090D; --term-ink: #E3EAF0; --term-in: #F2C15E;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { background: var(--paper); color: var(--ink); font: 400 18px/1.6 var(--f-ui); margin: 0; overflow-x: hidden; }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--teal-ink); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-display); line-height: 1.1; margin: 0; }
+h1 { font-size: clamp(2rem, 6vw, 2.8rem); }
+h2 { font-size: clamp(1.6rem, 4.6vw, 2.1rem); }
+h3 { font-size: 1.35rem; color: var(--teal-ink); }
+p { margin: 0; }
+.prose p, .prose li { font-family: var(--f-body); font-size: 1.06rem; }
+.prose { display: grid; gap: 12px; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+code, .mono { font-family: var(--f-code); font-size: .88em; }
+:not(pre) > code { background: var(--teal-soft); color: var(--teal-ink); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+
+/* ---------- testata ---------- */
+header.top { position: sticky; top: 0; z-index: 20; background: var(--sheet); border-bottom: 1px solid var(--rule); padding-top: env(safe-area-inset-top, 0px); }
+.top-in { display: flex; align-items: center; gap: 12px; min-height: 60px; }
+.logo { font: 700 1.7rem/1 var(--f-display); color: var(--teal); letter-spacing: -.02em; }
+.brand-t { font: 700 1.2rem/1.1 var(--f-display); white-space: nowrap; }
+.brand-s { font-size: .85rem; color: var(--ink-2); line-height: 1.2; }
+.pill { margin-left: auto; font: 700 .95rem/1 var(--f-display); letter-spacing: .04em; color: var(--on-teal); background: var(--teal); border-radius: 99px; padding: 7px 11px; white-space: nowrap; }
+.theme-b { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--rule-strong); background: var(--paper); color: var(--ink); cursor: pointer; font-size: 1.1rem; flex: none; }
+@media (max-width: 520px) { .brand-s { display: none; } }
+
+main > *, .card > *, .mc > * { min-width: 0; }
+main { grid-template-columns: minmax(0, 1fr); display: grid; gap: 26px; padding-top: 22px; padding-bottom: 60px; }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 16px; padding: 22px; display: grid; gap: 14px; min-width: 0; }
+@media (max-width: 600px) { .card { padding: 16px; border-radius: 14px; } }
+.kicker { font: 700 .78rem/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--teal-ink); }
+.lead { font-family: var(--f-body); font-size: 1.12rem; color: var(--ink-2); }
+
+/* ---------- indice ---------- */
+.toc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 8px; }
+.toc a { display: flex; gap: 10px; align-items: center; border: 1px solid var(--rule); background: var(--paper); padding: 9px 12px; border-radius: 10px; color: var(--ink); text-decoration: none; font-weight: 600; min-height: 3em; line-height: 1.25; }
+.toc a:hover { border-color: var(--teal); }
+.toc a .n { flex: none; background: var(--teal); color: var(--on-teal); border-radius: 8px; min-width: 2em; text-align: center; font: 700 1rem/1.6 var(--f-display); }
+.toc a.ok { border-color: var(--ok); background: var(--ok-bg); }
+.toc a.ok .n { background: var(--ok); color: var(--sheet); }
+.toc a.ok .n::after { content: " ✓"; }
+.toc-h { font: 700 .78rem/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); margin-top: 6px; }
+
+/* ---------- codice ---------- */
+.code { margin: 0; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 0; font: 400 .86rem/1.6 var(--f-code); overflow-x: auto; color: var(--ink); tab-size: 4; -webkit-text-size-adjust: 100%; }
+.code .ln { display: block; padding: 0 14px 0 0; white-space: pre; min-height: 1.6em; }
+.code .ln::before { content: attr(data-n); display: inline-block; width: 2.6em; padding-right: .9em; text-align: right; color: var(--c-com); opacity: .7; user-select: none; }
+.code.plain .ln::before { content: none; }
+.code.plain .ln { padding-left: 14px; }
+.t-kw { color: var(--c-kw); font-weight: 600; }
+.t-ty { color: var(--c-ty); font-weight: 600; }
+.t-str { color: var(--c-str); }
+.t-num { color: var(--c-num); }
+.t-com { color: var(--c-com); font-style: italic; }
+.t-pre { color: var(--c-pre); }
+.t-io { color: var(--c-io); font-weight: 600; }
+.t-cls { color: var(--pen-red); font-weight: 600; }
+
+/* codice spiegato riga per riga */
+#explorer .ln.has { cursor: pointer; border-left: 3px solid transparent; }
+#explorer .ln.has:hover { background: var(--teal-soft); }
+#explorer .ln.sel { background: var(--code-line); border-left-color: var(--amber); }
+#explorer .ln.zone-c { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--teal) 35%, transparent); }
+#explorer .ln.zone-m { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--pen-red) 35%, transparent); }
+.expl { display: block; white-space: normal; margin: 4px 12px 8px 3.5em; padding: 10px 12px; border-radius: 10px; background: var(--sheet); border: 1px solid var(--amber); font: 400 .98rem/1.5 var(--f-ui); color: var(--ink); }
+.expl b { color: var(--teal-ink); }
+@media (max-width: 600px) { .expl { margin-left: 10px; margin-right: 10px; } }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .92rem; color: var(--ink-2); }
+.legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend .lc::before { background: color-mix(in srgb, var(--teal) 45%, transparent); }
+.legend .lm::before { background: color-mix(in srgb, var(--pen-red) 45%, transparent); }
+
+/* ---------- blocchi ---------- */
+.tip { background: var(--teal-soft); border-radius: 10px; padding: 12px 14px; font-size: 1rem; }
+.tip b:first-child { color: var(--teal-ink); }
+.warn { background: var(--warn-bg); border-left: 4px solid var(--warn); border-radius: 10px; padding: 12px 14px; font-size: 1rem; }
+.warn b:first-child { color: var(--warn); }
+.analogy { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; }
+.analogy > div { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 12px; display: grid; gap: 4px; align-content: start; }
+.analogy .arrow { background: none; border: 0; align-self: center; font: 700 1.6rem/1 var(--f-display); color: var(--teal); padding: 0; }
+.analogy b { font-family: var(--f-display); font-size: 1.2rem; color: var(--teal-ink); }
+@media (max-width: 600px) { .analogy { grid-template-columns: 1fr; } .analogy .arrow { justify-self: center; transform: rotate(90deg); } }
+.objs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+.obj { border: 2px solid var(--teal); border-radius: 12px; overflow: hidden; background: var(--sheet); }
+.obj-h { background: var(--teal); color: var(--on-teal); font: 700 1.1rem/1.2 var(--f-display); padding: 6px 12px; }
+.obj-h small { font: 500 .8rem var(--f-ui); opacity: .85; }
+.obj table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.obj td { padding: 5px 12px; border-top: 1px solid var(--rule); }
+.obj td:last-child { text-align: right; font-family: var(--f-code); font-weight: 600; }
+.obj td.chg { background: var(--warn-bg); color: var(--warn); }
+.tbl { width: 100%; border-collapse: collapse; font-size: .98rem; }
+.tbl th, .tbl td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.tbl th { font: 700 .8rem/1.2 var(--f-ui); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); }
+.tbl-wrap { overflow-x: auto; }
+
+/* ---------- tappe ---------- */
+.tappa { scroll-margin-top: 76px; }
+.tappa-h { display: flex; gap: 12px; align-items: center; }
+.tappa-n { flex: none; width: 46px; height: 46px; border-radius: 12px; background: var(--teal); color: var(--on-teal); display: grid; place-items: center; font: 700 1.5rem/1 var(--f-display); }
+.tappa.done .tappa-n { background: var(--ok); color: var(--sheet); }
+.endrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); padding-top: 14px; }
+.btn { font: 600 1rem/1.2 var(--f-ui); border: 1px solid var(--teal); background: var(--teal); color: var(--on-teal); border-radius: 10px; padding: 10px 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.btn.ghost { background: var(--sheet); color: var(--teal-ink); }
+.btn.soft { background: var(--teal-soft); color: var(--teal-ink); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.okb { background: var(--ok); border-color: var(--ok); color: var(--sheet); }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- domande ---------- */
+.mc { display: grid; gap: 8px; background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; }
+.mc .q { font-weight: 600; }
+.mc .q .qn { color: var(--teal-ink); margin-right: 4px; }
+.mc .opts { display: grid; gap: 6px; }
+.mc .opt { text-align: left; font: 500 1rem/1.35 var(--f-ui); background: var(--sheet); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 10px; padding: 10px 12px; cursor: pointer; min-height: 44px; }
+.mc .opt:hover:not(:disabled) { border-color: var(--teal); }
+.mc .opt code { white-space: pre-wrap; }
+.mc .opt.right { background: var(--ok-bg); border-color: var(--ok); color: var(--ink); }
+.mc .opt.wrong { background: var(--ko-bg); border-color: var(--ko); }
+.mc .opt:disabled { cursor: default; }
+.mc .why { border-radius: 10px; padding: 10px 12px; font-size: .98rem; }
+.mc .why.good { background: var(--ok-bg); }
+.mc .why.bad { background: var(--ko-bg); }
+.mc .why b:first-child { display: block; }
+.mc .why.good b:first-child { color: var(--ok); }
+.mc .why.bad b:first-child { color: var(--ko); }
+.mc pre.code { font-size: .8rem; }
+.score { font: 700 1.2rem/1.2 var(--f-display); color: var(--teal-ink); }
+
+/* trova l'errore */
+.bug .ln { cursor: pointer; padding-left: 0; }
+.bug .ln:hover { background: var(--teal-soft); }
+.bug .ln.right { background: var(--ok-bg); }
+.bug .ln.wrong { background: var(--ko-bg); }
+.bug.locked .ln { cursor: default; }
+
+/* completa */
+.fill { font: 400 .9rem/2.1 var(--f-code); background: var(--code-bg); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 14px; overflow-x: auto; white-space: pre; }
+.fill input { font: 600 .9rem var(--f-code); width: 8ch; padding: 2px 6px; border: 1px solid var(--rule-strong); border-radius: 6px; background: var(--field); color: var(--ink); text-align: center; }
+.fill input.right { border-color: var(--ok); background: var(--ok-bg); }
+.fill input.wrong { border-color: var(--ko); background: var(--ko-bg); }
+
+/* scrivi tu */
+textarea.write { width: 100%; min-height: 170px; font: 400 .9rem/1.5 var(--f-code); padding: 12px; border-radius: 10px; border: 1px solid var(--rule-strong); background: var(--field); color: var(--ink); resize: vertical; tab-size: 4; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: .98rem; }
+.checks li::before { content: "•"; display: inline-block; width: 1.4em; font-weight: 700; color: var(--ink-2); }
+.checks li.y::before { content: "✓"; color: var(--ok); }
+.checks li.n::before { content: "✗"; color: var(--ko); }
+
+/* ---------- simulatore ---------- */
+.inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+.inputs fieldset { border: 1px solid var(--rule); border-radius: 12px; padding: 10px 12px 12px; margin: 0; display: grid; gap: 8px; min-width: 0; }
+.inputs legend { font: 700 1.1rem var(--f-display); color: var(--teal-ink); padding: 0 4px; }
+.inputs label { display: grid; grid-template-columns: 7.5em 1fr; align-items: center; gap: 8px; font-size: .95rem; }
+.inputs input { font: 500 1rem var(--f-code); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--rule-strong); background: var(--field); color: var(--ink); width: 100%; min-width: 0; }
+.term { background: var(--term-bg); color: var(--term-ink); border-radius: 12px; padding: 12px 14px; font: 400 .86rem/1.55 var(--f-code); white-space: pre-wrap; word-break: break-all; min-height: 4.5em; }
+.term .in { color: var(--term-in); font-weight: 600; }
+.term-h { font: 700 .78rem/1.2 var(--f-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.trace-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 760px) { .trace-grid { grid-template-columns: 1fr; } }
+#trace-code { max-height: 340px; overflow: auto; font-size: .8rem; }
+#trace-code .ln.cur { background: var(--code-line); box-shadow: inset 4px 0 0 var(--amber); }
+.say { background: var(--warn-bg); border-radius: 10px; padding: 12px 14px; font-size: 1rem; min-height: 3.5em; }
+.say .stepn { font: 700 .78rem/1.2 var(--f-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--warn); display: block; margin-bottom: 2px; }
+.vars { display: flex; flex-wrap: wrap; gap: 6px; }
+.var { border: 1px solid var(--rule-strong); border-radius: 8px; padding: 4px 10px; font: 500 .9rem var(--f-code); background: var(--sheet); }
+.var.chg { background: var(--warn-bg); border-color: var(--warn); }
+.side { display: grid; gap: 10px; min-width: 0; }
+
+/* ---------- glossario ---------- */
+.term-w { cursor: help; text-decoration: underline dotted var(--teal); text-decoration-thickness: 2px; text-underline-offset: 3px; border-radius: 3px; }
+.term-w:hover, .term-w[aria-expanded="true"] { background: var(--teal-soft); color: var(--teal-ink); }
+#pop { position: absolute; z-index: 40; width: min(340px, calc(100vw - 24px)); background: var(--sheet); color: var(--ink); border: 1px solid var(--teal); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, .22); padding: 12px 14px 14px; display: grid; gap: 6px; }
+#pop.sheet { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); top: auto !important; width: auto; }
+.pop-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.pop-t { font: 700 1.25rem/1.15 var(--f-display); color: var(--teal-ink); }
+.pop-x { font: 600 1.4rem/1 var(--f-ui); width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--rule-strong); background: var(--paper); color: var(--ink); cursor: pointer; flex: none; }
+.pop-b { font: 400 1.02rem/1.55 var(--f-body); }
+.gloss { margin: 0; display: grid; gap: 2px; }
+.gloss dt { font-weight: 700; color: var(--teal-ink); margin-top: 8px; }
+.gloss dd { margin: 0; font-family: var(--f-body); }
+
+/* ---------- foglietto ---------- */
+.sheetgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 10px; }
+.sheetgrid > div { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 12px; display: grid; gap: 6px; align-content: start; }
+.sheetgrid b { font-family: var(--f-display); font-size: 1.15rem; color: var(--teal-ink); }
+.sheetgrid p { font-size: .97rem; }
+
+/* verifica */
+.grade { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--teal-soft); border-radius: 12px; padding: 14px 16px; }
+.grade .big { font: 700 3rem/1 var(--f-display); color: var(--teal-ink); }
+footer { color: var(--ink-2); font-size: .9rem; text-align: center; padding-bottom: 30px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <span class="logo" aria-hidden="true">C++</span>
+    <div><div class="brand-t">Ripasso classi C++</div><div class="brand-s">La classe studente spiegata da zero</div></div>
+    <span class="pill" id="pill" aria-live="polite">0/10</span>
+    <button class="theme-b" id="theme" type="button" aria-label="Cambia tema chiaro o scuro">◐</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <div class="kicker">Di cosa parla</div>
+  <h1>Capire la classe <span class="mono">studente</span>, una riga alla volta</h1>
+  <p class="lead">Il programma descrive uno studente (età, matricola, media), ne crea due, Paolo e Antonio, chiede i loro dati, li stampa e dice se sono promossi. Qui trovi dieci tappe brevi, il programma che gira passo passo e tanti esercizi per prepararti alla verifica.</p>
+  <div class="tip"><b>Come si usa:</b> le parole <span class="term-w" data-t="sottolineate">sottolineate</span> si spiegano con un tocco. Alla fine di ogni tappa premi «Ho capito»: le tappe fatte diventano verdi e il conteggio in alto sale.</div>
+  <div class="toc-h">Le tappe</div>
+  <ul class="toc" id="toc-tappe"></ul>
+  <div class="toc-h">Allenamento</div>
+  <ul class="toc">
+    <li><a href="#codice"><span class="n">&lt;/&gt;</span>Il codice spiegato riga per riga</a></li>
+    <li><a href="#quiz"><span class="n">?</span>Quiz veloce</a></li>
+    <li><a href="#completa"><span class="n">_</span>Completa il codice</a></li>
+    <li><a href="#errori"><span class="n">!</span>Trova l'errore</a></li>
+    <li><a href="#scrivi"><span class="n">✎</span>Scrivi tu</a></li>
+    <li><a href="#verifica"><span class="n">10</span>Verifica simulata</a></li>
+    <li><a href="#foglietto"><span class="n">≡</span>Il foglietto riassuntivo</a></li>
+  </ul>
+</section>
+
+<!-- ===================== CODICE ===================== -->
+<section class="card" id="codice">
+  <div class="kicker">Il codice</div>
+  <h2>Tocca una riga per sapere cosa fa</h2>
+  <p class="lead">Ogni riga con il numero si apre e mostra la spiegazione. Tocca di nuovo per chiuderla.</p>
+  <div class="legend"><span class="lc">la classe: il progetto dello studente</span><span class="lm">il main: dove parte il programma</span></div>
+  <pre class="code" id="explorer"></pre>
+  <div class="btnrow"><button class="btn ghost" type="button" id="open-all">Apri tutte le spiegazioni</button><button class="btn ghost" type="button" id="close-all">Chiudi tutte</button></div>
+</section>
+
+<!-- ===================== TAPPE ===================== -->
+<section class="card tappa" id="t1" data-tappa="1" data-title="Classe e oggetto">
+  <div class="tappa-h"><span class="tappa-n">1</span><h2>Classe e oggetto: lo stampo e il biscotto</h2></div>
+  <div class="prose">
+    <p>Una <span class="term-w" data-t="classe">classe</span> è un <b>progetto</b>: dice quali dati e quali azioni avrà una cosa, ma non è ancora una cosa vera. Un <span class="term-w" data-t="oggetto">oggetto</span> è una cosa vera costruita con quel progetto.</p>
+  </div>
+  <div class="analogy">
+    <div><b>Classe = modulo vuoto</b><p>«Studente: età ___, matricola ___, media ___». Uno solo, vale per tutti.</p></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div><b>Oggetti = moduli compilati</b><p>Paolo: 18, 1001, 7.5<br>Antonio: 17, 1002, 5.5<br>Ognuno ha i suoi dati.</p></div>
+  </div>
+  <pre class="code plain">class studente {
+    ...
+};              // il ; dopo la graffa è obbligatorio
+
+studente Paolo;    // crea l'oggetto Paolo
+studente Antonio;  // crea l'oggetto Antonio</pre>
+  <div class="prose">
+    <p>La riga <code>studente Paolo;</code> si legge come <code>int x;</code>: prima il tipo, poi il nome. Solo che qui il tipo l'abbiamo inventato noi: è la classe <code>studente</code>.</p>
+  </div>
+  <div class="warn"><b>Occhio:</b> dopo la graffa che chiude la classe ci vuole il punto e virgola <code>};</code>. Dimenticarlo è l'errore più comune in verifica.</div>
+  <div class="mc" data-ok="1">
+    <p class="q">Nel programma, chi sono gli oggetti?</p>
+    <div class="opts"><button class="opt" type="button"><code>studente</code></button><button class="opt" type="button"><code>Paolo</code> e <code>Antonio</code></button><button class="opt" type="button"><code>eta</code>, <code>nmat</code> e <code>media</code></button></div>
+    <p class="why" hidden><b>Giusto: Paolo e Antonio.</b><code>studente</code> è la classe (il progetto); <code>eta</code>, <code>nmat</code> e <code>media</code> sono i dati dentro ogni oggetto.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t2" data-tappa="2" data-title="Gli attributi">
+  <div class="tappa-h"><span class="tappa-n">2</span><h2>Gli attributi: i dati dello studente</h2></div>
+  <div class="prose">
+    <p>Gli <span class="term-w" data-t="attributo">attributi</span> sono le variabili che stanno <b>dentro</b> la classe. Ogni oggetto ne ha una copia tutta sua: l'età di Paolo e l'età di Antonio sono due caselle diverse.</p>
+  </div>
+  <pre class="code plain">int eta, nmat;   // due numeri interi
+float media;     // un numero con la virgola</pre>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Attributo</th><th>Tipo</th><th>Esempio</th><th>Perché quel tipo</th></tr></thead>
+    <tbody>
+      <tr><td><code>eta</code></td><td><span class="term-w" data-t="int">int</span></td><td>18</td><td>l'età è un numero intero</td></tr>
+      <tr><td><code>nmat</code></td><td>int</td><td>1001</td><td>la matricola è un numero intero</td></tr>
+      <tr><td><code>media</code></td><td><span class="term-w" data-t="float">float</span></td><td>7.5</td><td>la media può avere la virgola</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><b>In C++ la virgola si scrive col punto:</b> <code>7.5</code>, non <code>7,5</code>. Vale anche quando scrivi i numeri da tastiera mentre il programma gira.</div>
+  <div class="mc" data-ok="2">
+    <p class="q">Perché <code>media</code> è <code>float</code> e non <code>int</code>?</p>
+    <div class="opts"><button class="opt" type="button">Perché è più veloce</button><button class="opt" type="button">Perché <code>int</code> non si può stampare</button><button class="opt" type="button">Perché la media può avere la virgola, ad esempio 6.5</button></div>
+    <p class="why" hidden><b>Esatto.</b>Un <code>int</code> tiene solo numeri interi: 6.5 diventerebbe 6 e la parte dopo la virgola andrebbe persa.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t3" data-tappa="3" data-title="public e private">
+  <div class="tappa-h"><span class="tappa-n">3</span><h2>public e private: chi può toccare i dati</h2></div>
+  <div class="prose">
+    <ul>
+      <li><span class="term-w" data-t="public">public</span>: si può usare <b>anche da fuori</b> la classe, per esempio da <code>main</code>.</li>
+      <li><span class="term-w" data-t="private">private</span>: si può usare <b>solo dentro</b> la classe, cioè nei suoi metodi.</li>
+    </ul>
+    <p>Nel codice c'è scritto <code>public:</code> due volte. Funziona, ma la regola delle classi dice che i dati vanno messi <b>private</b> e i metodi <b>public</b>. Così i dati si cambiano solo passando dai metodi: si chiama <span class="term-w" data-t="incapsulamento">incapsulamento</span>.</p>
+  </div>
+  <pre class="code plain">class studente {
+private:              // al posto del primo public:
+    int eta, nmat;
+    float media;
+public:               // i metodi restano pubblici
+    ...
+};</pre>
+  <div class="analogy">
+    <div><b>Con public</b><p>Da <code>main</code> si può scrivere <code>Paolo.media = 15;</code> e nessuno controlla che sia un voto sensato.</p></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div><b>Con private</b><p><code>Paolo.media = 15;</code> dà errore di compilazione. Si deve passare da <code>Paolo.set_media(15);</code>, che può controllare il valore.</p></div>
+  </div>
+  <div class="tip"><b>Da sapere:</b> in una <code>class</code>, se non scrivi niente, tutto è private.</div>
+  <div class="mc" data-ok="0">
+    <p class="q">Se <code>media</code> fosse private, cosa succederebbe con <code>Paolo.media = 7;</code> dentro <code>main</code>?</p>
+    <div class="opts"><button class="opt" type="button">Errore di compilazione: da fuori la classe non si può toccare</button><button class="opt" type="button">Funziona normalmente</button><button class="opt" type="button">La media diventa 0</button></div>
+    <p class="why" hidden><b>Giusto.</b>Un attributo private si usa solo dentro i metodi della classe. Da <code>main</code> bisogna usare <code>Paolo.set_media(7);</code>.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t4" data-tappa="4" data-title="Il costruttore">
+  <div class="tappa-h"><span class="tappa-n">4</span><h2>Il costruttore: quando l'oggetto nasce</h2></div>
+  <div class="prose">
+    <p>Il <span class="term-w" data-t="costruttore">costruttore</span> è un metodo speciale che parte <b>da solo</b> quando l'oggetto viene creato. Si riconosce perché:</p>
+    <ul>
+      <li>ha <b>lo stesso nome della classe</b> (<code>studente</code>);</li>
+      <li><b>non ha tipo davanti</b>, nemmeno <code>void</code>.</li>
+    </ul>
+    <p>Nel codice ce ne sono due:</p>
+  </div>
+  <pre class="code plain">studente() {                          // 1) senza parametri
+    eta = 0; nmat = 0; media = 0;     // mette tutto a zero
+}
+studente(int e, int matr, float m) {  // 2) con tre parametri
+    eta = e; nmat = matr; media = m;  // copia i valori ricevuti
+}</pre>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Se scrivi</th><th>Parte il costruttore</th><th>Risultato</th></tr></thead>
+    <tbody>
+      <tr><td><code>studente Paolo;</code></td><td>senza parametri</td><td>eta 0, nmat 0, media 0</td></tr>
+      <tr><td><code>studente Luca(19, 3003, 8.5);</code></td><td>con tre parametri</td><td>eta 19, nmat 3003, media 8.5</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prose">
+    <p>Due metodi con lo stesso nome ma parametri diversi: si chiama <span class="term-w" data-t="overloading">overloading</span>. Il compilatore sceglie quello giusto guardando quanti valori gli passi.</p>
+    <p>Nel <code>main</code> del codice viene usato solo il primo: il secondo esiste ma nessuno lo chiama.</p>
+  </div>
+  <div class="warn"><b>Occhio:</b> scrivi <code>studente Paolo;</code> senza parentesi. Con le parentesi vuote, <code>studente Paolo();</code>, il compilatore non crea un oggetto.</div>
+  <div class="mc" data-ok="2">
+    <p class="q">Che valori ha Paolo subito dopo <code>studente Paolo;</code>?</p>
+    <div class="opts"><button class="opt" type="button">Valori a caso</button><button class="opt" type="button">Quelli scritti da tastiera</button><button class="opt" type="button">eta 0, nmat 0, media 0</button></div>
+    <p class="why" hidden><b>Esatto.</b>Parte il costruttore senza parametri, che mette tutti gli attributi a 0. I valori da tastiera arrivano dopo, con i set.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t5" data-tappa="5" data-title="I metodi get e set">
+  <div class="tappa-h"><span class="tappa-n">5</span><h2>I metodi get e set: leggere e scrivere</h2></div>
+  <div class="prose">
+    <p>Un <span class="term-w" data-t="metodo">metodo</span> è una funzione che sta dentro la classe. Quelli che iniziano con get e set sono le «porte» per arrivare agli attributi.</p>
+  </div>
+  <div class="analogy">
+    <div><b>get = leggi</b><p><code>int get_eta() { return eta; }</code></p><p>Non riceve niente, <span class="term-w" data-t="return">restituisce</span> il valore. Il tipo davanti è quello dell'attributo.</p></div>
+    <div class="arrow" aria-hidden="true">↔</div>
+    <div><b>set = scrivi</b><p><code>void set_eta(int e) { eta = e; }</code></p><p>Riceve un valore (il <span class="term-w" data-t="parametro">parametro</span> <code>e</code>) e lo copia nell'attributo. Non restituisce niente: <span class="term-w" data-t="void">void</span>.</p></div>
+  </div>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Attributo</th><th>get</th><th>set</th></tr></thead>
+    <tbody>
+      <tr><td><code>eta</code></td><td><code>int get_eta()</code></td><td><code>void set_eta(int e)</code></td></tr>
+      <tr><td><code>nmat</code></td><td><code>int get_nmat()</code></td><td><code>void set_nmat(int matr)</code></td></tr>
+      <tr><td><code>media</code></td><td><code>float get_media()</code></td><td><code>void set_media(float m)</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="prose"><p>Per usarli da <code>main</code> si scrive <b>oggetto, punto, metodo</b>: <code>Paolo.set_eta(18);</code> scrive 18 nell'età di Paolo; <code>Paolo.get_eta()</code> la legge.</p></div>
+  <div class="tip"><b>Nel codice</b> i get esistono ma non vengono mai usati: in <code>main</code> ci sono solo i set.</div>
+  <div class="mc" data-ok="1">
+    <p class="q">Che tipo restituisce <code>get_media()</code>?</p>
+    <div class="opts"><button class="opt" type="button"><code>void</code></button><button class="opt" type="button"><code>float</code>, perché <code>media</code> è float</button><button class="opt" type="button"><code>int</code></button></div>
+    <p class="why" hidden><b>Giusto.</b>Il get restituisce l'attributo, quindi ha lo stesso tipo dell'attributo: <code>float get_media()</code>.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t6" data-tappa="6" data-title="Stampare con cout">
+  <div class="tappa-h"><span class="tappa-n">6</span><h2>visualizzadati: stampare con cout</h2></div>
+  <div class="prose">
+    <p><span class="term-w" data-t="cout">cout</span> scrive sullo schermo. Le frecce <code>&lt;&lt;</code> mettono in fila i pezzi da stampare:</p>
+    <ul>
+      <li>il testo tra virgolette viene stampato <b>così com'è</b>;</li>
+      <li>una variabile viene sostituita dal suo <b>valore</b>.</li>
+    </ul>
+  </div>
+  <pre class="code plain">cout &lt;&lt; "eta è: " &lt;&lt; eta;   // se eta vale 18 stampa: eta è: 18</pre>
+  <div class="prose"><p>Problema: nel codice non si va mai a capo. Con Paolo (18, 1001, 7.5) lo schermo mostra tutto attaccato:</p></div>
+  <div class="term">eta è: 18la matricola è: 1001la media è: 7.5</div>
+  <div class="prose"><p>Per andare a capo si aggiunge <span class="term-w" data-t="endl">endl</span> (oppure <code>"\n"</code>):</p></div>
+  <pre class="code plain">void visualizzadati() {
+    cout &lt;&lt; "eta è: " &lt;&lt; eta &lt;&lt; endl;
+    cout &lt;&lt; "la matricola è: " &lt;&lt; nmat &lt;&lt; endl;
+    cout &lt;&lt; "la media è: " &lt;&lt; media &lt;&lt; endl;
+}</pre>
+  <div class="term">eta è: 18
+la matricola è: 1001
+la media è: 7.5</div>
+  <div class="tip"><b>Curiosità:</b> sul terminale di Windows le lettere accentate come «è» possono uscire come simboli strani. Non è un errore del programma.</div>
+  <div class="mc" data-ok="0">
+    <p class="q">Se <code>nmat</code> vale 1001, cosa stampa <code>cout &lt;&lt; "matricola" &lt;&lt; nmat;</code>?</p>
+    <div class="opts"><button class="opt" type="button"><code>matricola1001</code></button><button class="opt" type="button"><code>matricola nmat</code></button><button class="opt" type="button"><code>matricola 1001</code></button></div>
+    <p class="why" hidden><b>Giusto: matricola1001.</b>cout non aggiunge spazi da solo. Per avere lo spazio bisogna scriverlo dentro le virgolette: <code>"matricola "</code>.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t7" data-tappa="7" data-title="if, else e return">
+  <div class="tappa-h"><span class="tappa-n">7</span><h2>esitofinale: if, else e return</h2></div>
+  <pre class="code plain">int esitofinale() {
+    if (media &gt;= 6) {         // se la media è maggiore o uguale a 6
+        cout &lt;&lt; "promosso";
+        return 1;              // esce e restituisce 1
+    } else {                   // altrimenti (media minore di 6)
+        cout &lt;&lt; "bocciato";
+        return 0;              // esce e restituisce 0
+    }
+}</pre>
+  <div class="prose">
+    <ul>
+      <li><code>&gt;=</code> vuol dire «maggiore o uguale»: con 6 esatto si è promossi.</li>
+      <li><span class="term-w" data-t="return">return</span> fa due cose: termina il metodo e consegna un valore a chi l'ha chiamato.</li>
+      <li>Il metodo è <code>int</code> perché restituisce un numero: 1 per promosso, 0 per bocciato.</li>
+    </ul>
+    <p>Nel <code>main</code> si scrive solo <code>Paolo.esitofinale();</code>: il numero restituito non viene salvato da nessuna parte, quindi va perso. Resta solo la scritta sullo schermo.</p>
+  </div>
+  <h3>L'esercizio nascosto nel commento</h3>
+  <div class="prose"><p>Nel codice c'è un <span class="term-w" data-t="commento">commento</span> che chiede un metodo <code>promosso()</code> che restituisca <b>true</b> se la media è maggiore o uguale a 6, <b>false</b> altrimenti. Vero o falso si dice <span class="term-w" data-t="bool">bool</span>:</p></div>
+  <pre class="code plain">bool promosso() {
+    if (media &gt;= 6)
+        return true;
+    else
+        return false;
+}
+
+// versione corta, fa la stessa cosa:
+bool promosso() { return media &gt;= 6; }</pre>
+  <div class="tip"><b>Differenza con esitofinale:</b> <code>promosso()</code> non stampa niente, risponde solo vero o falso. Poi in <code>main</code> si usa così: <code>if (Paolo.promosso()) cout &lt;&lt; "Paolo promosso";</code></div>
+  <div class="mc" data-ok="1">
+    <p class="q">Antonio ha media 6. Cosa stampa <code>Antonio.esitofinale();</code>?</p>
+    <div class="opts"><button class="opt" type="button"><code>bocciato</code></button><button class="opt" type="button"><code>promosso</code></button><button class="opt" type="button"><code>1</code></button></div>
+    <p class="why" hidden><b>Giusto: promosso.</b>6 &gt;= 6 è vero. Il valore 1 viene restituito ma non stampato, perché nessuno lo mette in un cout.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t8" data-tappa="8" data-title="Il main e cin">
+  <div class="tappa-h"><span class="tappa-n">8</span><h2>Il main: leggere con cin e usare gli oggetti</h2></div>
+  <div class="prose">
+    <p><code>main</code> è il punto da cui parte il programma. Fa quattro cose, in quest'ordine:</p>
+    <ol>
+      <li><b>Prepara le variabili d'appoggio</b> <code>e</code>, <code>matr</code>, <code>m</code>: servono per leggere da tastiera. Non sono gli attributi!</li>
+      <li><b>Crea gli oggetti</b> Paolo e Antonio (con tutto a 0).</li>
+      <li><b>Legge e copia</b>: <span class="term-w" data-t="cin">cin</span> legge tre valori, poi i set li copiano dentro l'oggetto.</li>
+      <li><b>Stampa</b> i dati e l'esito di entrambi.</li>
+    </ol>
+  </div>
+  <pre class="code plain">cin &gt;&gt; e &gt;&gt; matr &gt;&gt; m;   // legge tre valori: 18 1001 7.5
+Paolo.set_eta(e);          // l'età di Paolo diventa 18
+Paolo.set_nmat(matr);      // la matricola di Paolo diventa 1001
+Paolo.set_media(m);        // la media di Paolo diventa 7.5</pre>
+  <div class="analogy">
+    <div><b>cout &lt;&lt;</b><p>Le frecce vanno <b>verso cout</b>: i dati escono sullo schermo.</p></div>
+    <div class="arrow" aria-hidden="true">↔</div>
+    <div><b>cin &gt;&gt;</b><p>Le frecce vanno <b>verso la variabile</b>: i dati entrano dalla tastiera.</p></div>
+  </div>
+  <div class="prose"><p>Per Antonio si riusano le stesse variabili <code>e</code>, <code>matr</code>, <code>m</code>. Va bene: i valori di Paolo sono già stati copiati dentro l'oggetto Paolo, quindi sovrascrivere le variabili non li cancella.</p></div>
+  <div class="tip"><b>Ultima riga:</b> <code>return 0;</code> dice al sistema che il programma è finito senza errori.</div>
+  <div class="mc" data-ok="2">
+    <p class="q">Dopo aver letto i dati di Antonio, Paolo ha ancora i suoi?</p>
+    <div class="opts"><button class="opt" type="button">No, vengono sovrascritti</button><button class="opt" type="button">Solo l'età</button><button class="opt" type="button">Sì: sono stati copiati dentro l'oggetto Paolo</button></div>
+    <p class="why" hidden><b>Esatto.</b>Cambiano solo le variabili d'appoggio. Gli attributi di Paolo e quelli di Antonio sono caselle separate.</p>
+  </div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t9" data-tappa="9" data-title="Il programma passo passo">
+  <div class="tappa-h"><span class="tappa-n">9</span><h2>Il programma che gira, passo passo</h2></div>
+  <p class="lead">Scegli i dati che scriveresti alla tastiera, poi premi «Avanti» e guarda cosa succede in memoria e sullo schermo, una riga alla volta.</p>
+  <div class="inputs">
+    <fieldset><legend>Paolo</legend>
+      <label>età <input id="in-pe" inputmode="numeric" value="18"></label>
+      <label>matricola <input id="in-pm" inputmode="numeric" value="1001"></label>
+      <label>media <input id="in-pv" inputmode="decimal" value="7.5"></label>
+    </fieldset>
+    <fieldset><legend>Antonio</legend>
+      <label>età <input id="in-ae" inputmode="numeric" value="17"></label>
+      <label>matricola <input id="in-am" inputmode="numeric" value="1002"></label>
+      <label>media <input id="in-av" inputmode="decimal" value="5.5"></label>
+    </fieldset>
+  </div>
+  <p class="warn" id="in-err" hidden></p>
+  <div class="btnrow">
+    <button class="btn ghost" type="button" id="tr-reset">Ricomincia</button>
+    <button class="btn ghost" type="button" id="tr-prev">Indietro</button>
+    <button class="btn" type="button" id="tr-next">Avanti</button>
+    <button class="btn soft" type="button" id="tr-end">Vai alla fine</button>
+  </div>
+  <div class="say" id="tr-say" aria-live="polite"></div>
+  <div class="trace-grid">
+    <pre class="code" id="trace-code"></pre>
+    <div class="side">
+      <div class="term-h">Variabili di main</div>
+      <div class="vars" id="tr-vars"></div>
+      <div class="term-h">Oggetti in memoria</div>
+      <div class="objs" id="tr-objs"></div>
+    </div>
+  </div>
+  <div class="term-h">Schermo</div>
+  <div class="term" id="tr-out"></div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, avanti</button></div>
+</section>
+
+<section class="card tappa" id="t10" data-tappa="10" data-title="La versione corretta">
+  <div class="tappa-h"><span class="tappa-n">10</span><h2>La versione sistemata</h2></div>
+  <div class="prose">
+    <p>Il programma funziona, ma in verifica conviene sapere cosa migliorare. Ecco le quattro correzioni:</p>
+    <ol>
+      <li>attributi <b>private</b> invece di public;</li>
+      <li><b>endl</b> nelle stampe, così non esce tutto attaccato;</li>
+      <li>il metodo <b>promosso()</b> chiesto dal commento;</li>
+      <li>uno <b>spazio</b> o un a capo dopo le domande, così i dati scritti non si attaccano al testo.</li>
+    </ol>
+  </div>
+  <pre class="code" id="fixed-code"></pre>
+  <div class="term-h">Cosa si vede sullo schermo (con i dati 18 1001 7.5 e 17 1002 5.5)</div>
+  <div class="term">inserisci età, matricola e media di Paolo: <span class="in">18 1001 7.5</span>
+inserisci età, matricola e media di Antonio: <span class="in">17 1002 5.5</span>
+eta è: 18
+la matricola è: 1001
+la media è: 7.5
+eta è: 17
+la matricola è: 1002
+la media è: 5.5
+Paolo: promosso
+Antonio: bocciato</div>
+  <div class="endrow"><span></span><button class="btn done-b" type="button">Ho capito, finito!</button></div>
+</section>
+
+<!-- ===================== ALLENAMENTO ===================== -->
+<section class="card" id="quiz">
+  <div class="kicker">Allenamento 1</div>
+  <h2>Quiz veloce</h2>
+  <p class="lead">Dodici domande prese a caso. Tocca la risposta: vedi subito se è giusta e perché.</p>
+  <div id="quiz-list" style="display:grid;gap:12px"></div>
+  <div class="endrow"><span class="score" id="quiz-score">0/12</span><button class="btn ghost" type="button" id="quiz-new">Nuove domande</button></div>
+</section>
+
+<section class="card" id="completa">
+  <div class="kicker">Allenamento 2</div>
+  <h2>Completa il codice</h2>
+  <p class="lead">Scrivi nelle caselle la parola o il simbolo che manca, poi premi «Controlla».</p>
+  <div class="fill" id="fill"></div>
+  <div class="btnrow"><button class="btn" type="button" id="fill-check">Controlla</button><button class="btn ghost" type="button" id="fill-show">Mostra le soluzioni</button><button class="btn ghost" type="button" id="fill-clear">Svuota</button></div>
+  <p class="score" id="fill-score" aria-live="polite"></p>
+</section>
+
+<section class="card" id="errori">
+  <div class="kicker">Allenamento 3</div>
+  <h2>Trova l'errore</h2>
+  <p class="lead">In ogni pezzo di codice c'è una sola riga sbagliata. Toccala.</p>
+  <div id="bug-list" style="display:grid;gap:12px"></div>
+</section>
+
+<section class="card" id="scrivi">
+  <div class="kicker">Allenamento 4</div>
+  <h2>Scrivi tu</h2>
+  <p class="lead">Come in verifica: scrivi il codice nella casella e premi «Controlla». Il controllo guarda i pezzi importanti; poi confronta con la soluzione.</p>
+  <div id="write-list" style="display:grid;gap:16px"></div>
+</section>
+
+<section class="card" id="verifica">
+  <div class="kicker">Allenamento 5</div>
+  <h2>Verifica simulata da 10 punti</h2>
+  <p class="lead">Dieci domande miste: teoria, «cosa stampa?» e codice. Rispondi a tutte, poi premi «Consegna» per il voto e le correzioni.</p>
+  <div id="ver-list" style="display:grid;gap:12px"></div>
+  <div class="endrow"><span class="score" id="ver-count">0/10 risposte</span><div class="btnrow"><button class="btn ghost" type="button" id="ver-new">Nuova verifica</button><button class="btn" type="button" id="ver-send">Consegna</button></div></div>
+  <div class="grade" id="ver-grade" hidden></div>
+</section>
+
+<section class="card" id="foglietto">
+  <div class="kicker">Il foglietto</div>
+  <h2>Tutto in una pagina</h2>
+  <div class="sheetgrid">
+    <div><b>Classe</b><p>Il progetto. <code>class studente { ... };</code> con il <code>;</code> finale.</p></div>
+    <div><b>Oggetto</b><p>Una cosa vera fatta col progetto. <code>studente Paolo;</code></p></div>
+    <div><b>Attributi</b><p>I dati dentro la classe: <code>int eta, nmat; float media;</code></p></div>
+    <div><b>private / public</b><p>Dati private (solo dentro la classe), metodi public (usabili da main).</p></div>
+    <div><b>Costruttore</b><p>Stesso nome della classe, nessun tipo. Parte da solo quando l'oggetto nasce.</p></div>
+    <div><b>Overloading</b><p>Stesso nome, parametri diversi: <code>studente()</code> e <code>studente(int, int, float)</code>.</p></div>
+    <div><b>get</b><p>Legge: <code>float get_media() { return media; }</code></p></div>
+    <div><b>set</b><p>Scrive: <code>void set_media(float m) { media = m; }</code></p></div>
+    <div><b>Usare un metodo</b><p>Oggetto, punto, metodo: <code>Paolo.set_eta(18);</code></p></div>
+    <div><b>cout e cin</b><p><code>cout &lt;&lt;</code> stampa, <code>cin &gt;&gt;</code> legge. <code>endl</code> va a capo.</p></div>
+    <div><b>if / else</b><p><code>if (media &gt;= 6) {...} else {...}</code>. <code>&gt;=</code> = maggiore o uguale.</p></div>
+    <div><b>return</b><p>Esce dal metodo e consegna un valore. <code>void</code> = non restituisce niente.</p></div>
+    <div><b>bool</b><p>Solo <code>true</code> o <code>false</code>. <code>bool promosso() { return media &gt;= 6; }</code></p></div>
+    <div><b>Errori classici</b><p>Manca <code>;</code> dopo la classe · <code>void</code> davanti al costruttore · <code>cin &lt;&lt;</code> al posto di <code>cin &gt;&gt;</code> · metodo chiamato senza oggetto.</p></div>
+  </div>
+  <h3>Glossario</h3>
+  <dl class="gloss" id="gloss"></dl>
+</section>
+
+</main>
+<footer class="wrap">I progressi restano salvati in questo browser.</footer>
+
+<div id="pop" role="dialog" aria-modal="false" aria-labelledby="pop-t" hidden>
+  <div class="pop-h"><span class="pop-t" id="pop-t"></span><button class="pop-x" type="button" aria-label="Chiudi">×</button></div>
+  <div class="pop-b" id="pop-b"></div>
+</div>
+
+<script>
+(function () {
+"use strict";
+
+/* ---------------- memoria del browser ---------------- */
+var KEY = "ripasso-cpp-studente-v1";
+var S = { done: {}, theme: null };
+try { var raw = localStorage.getItem(KEY); if (raw) { var p = JSON.parse(raw); if (p && typeof p === "object") { S.done = p.done || {}; S.theme = p.theme || null; } } } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* ---------------- tema ---------------- */
+function applyTheme() { if (S.theme) document.documentElement.setAttribute("data-theme", S.theme); else document.documentElement.removeAttribute("data-theme"); }
+applyTheme();
+document.getElementById("theme").addEventListener("click", function () {
+  var dark = S.theme ? S.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  S.theme = dark ? "light" : "dark"; applyTheme(); save();
+});
+
+/* ---------------- utilità ---------------- */
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function $(id) { return document.getElementById(id); }
+
+/* evidenziazione della sintassi */
+var RX = /(\/\/.*$)|("(?:[^"\\]|\\.)*")|(#include\s*<[^>]*>)|\b(class|public|private|return|if|else|using|namespace|true|false)\b|\b(int|float|void|bool|double|char)\b|\b(cout|cin|endl)\b|\b(studente)\b|\b(\d+(?:\.\d+)?)\b/gm;
+function hl(line) {
+  var out = "", last = 0, m;
+  RX.lastIndex = 0;
+  while ((m = RX.exec(line))) {
+    out += esc(line.slice(last, m.index));
+    var cls = m[1] ? "t-com" : m[2] ? "t-str" : m[3] ? "t-pre" : m[4] ? "t-kw" : m[5] ? "t-ty" : m[6] ? "t-io" : m[7] ? "t-cls" : "t-num";
+    out += '<span class="' + cls + '">' + esc(m[0]) + "</span>";
+    last = m.index + m[0].length;
+    if (m[0].length === 0) RX.lastIndex++;
+  }
+  return out + esc(line.slice(last));
+}
+function renderCode(pre, text, numbered) {
+  var lines = text.replace(/\n$/, "").split("\n");
+  pre.innerHTML = lines.map(function (l, i) { return '<span class="ln" data-n="' + (numbered ? i + 1 : "") + '">' + (hl(l) || " ") + "</span>"; }).join("");
+  return pre.querySelectorAll(".ln");
+}
+document.querySelectorAll("pre.code.plain").forEach(function (pre) { renderCode(pre, pre.textContent, false); });
+
+/* ---------------- il codice originale ---------------- */
+var CODE = [
+'#include <iostream>',
+'using namespace std;',
+'',
+'class studente {',
+'public:',
+'    int eta, nmat;',
+'    float media;',
+'public:',
+'    studente() {',
+'        eta = 0;',
+'        nmat = 0;',
+'        media = 0;',
+'    }',
+'    studente(int e, int matr, float m) {',
+'        eta = e;',
+'        nmat = matr;',
+'        media = m;',
+'    }',
+'    int get_eta() { return eta; }',
+'    int get_nmat() { return nmat; }',
+'    float get_media() { return media; }',
+'',
+'    void set_eta(int e) { eta = e; }',
+'    void set_nmat(int matr) { nmat = matr; }',
+'    void set_media(float m) { media = m; }',
+'',
+'    // metodo chiamato promosso() che restituisce',
+'    // true se la media è maggiore o uguale a 6, false altrimenti',
+'    void visualizzadati() {',
+'        cout << "eta è: " << eta;',
+'        cout << "la matricola è: " << nmat;',
+'        cout << "la media è: " << media;',
+'    }',
+'',
+'    int esitofinale() {',
+'        if (media >= 6) {',
+'            cout << "promosso";',
+'            return 1;',
+'        } else {',
+'            cout << "bocciato";',
+'            return 0;',
+'        }',
+'    }',
+'};',
+'',
+'int main() {',
+'    int e, matr;',
+'    float m;',
+'    studente Paolo;',
+'    studente Antonio;',
+'',
+'    cout << "inserisci età, matricola e media di Paolo!";',
+'    cin >> e >> matr >> m;',
+'    Paolo.set_eta(e);',
+'    Paolo.set_nmat(matr);',
+'    Paolo.set_media(m);',
+'',
+'    cout << "inserisci età, matricola e media di Antonio!";',
+'    cin >> e >> matr >> m;',
+'    Antonio.set_eta(e);',
+'    Antonio.set_nmat(matr);',
+'    Antonio.set_media(m);',
+'',
+'    Paolo.visualizzadati();',
+'    Antonio.visualizzadati();',
+'',
+'    Paolo.esitofinale();',
+'    Antonio.esitofinale();',
+'',
+'    return 0;',
+'}'
+].join("\n");
+
+var EX = {
+1: "<b>Include la libreria iostream.</b> Serve per usare <code>cin</code> (leggere) e <code>cout</code> (scrivere). Senza questa riga il compilatore non li conosce.",
+2: "<b>Usa lo spazio dei nomi std.</b> Permette di scrivere <code>cout</code> invece di <code>std::cout</code>.",
+4: "<b>Inizia la classe studente.</b> Da qui fino a <code>};</code> della riga 44 c'è il progetto di uno studente: i suoi dati e i suoi metodi.",
+5: "<b>public:</b> quello che segue si può usare anche da <code>main</code>. Qui sarebbe meglio <code>private:</code>, per proteggere i dati (tappa 3).",
+6: "<b>Due attributi interi:</b> <code>eta</code> (l'età) e <code>nmat</code> (il numero di matricola). Si possono dichiarare sulla stessa riga separandoli con la virgola.",
+7: "<b>Attributo con la virgola:</b> <code>media</code> è float perché una media può essere 7.5.",
+8: "<b>public:</b> i metodi che seguono sono pubblici, così <code>main</code> li può chiamare.",
+9: "<b>Costruttore senza parametri.</b> Stesso nome della classe, niente tipo davanti. Parte da solo quando scrivi <code>studente Paolo;</code>.",
+10: "<b>Mette l'età a 0</b>, così l'oggetto non nasce con un valore a caso.",
+11: "<b>Mette la matricola a 0.</b>",
+12: "<b>Mette la media a 0.</b>",
+13: "<b>Fine del costruttore senza parametri.</b>",
+14: "<b>Costruttore con tre parametri.</b> Crea uno studente già compilato, per esempio <code>studente Luca(19, 3003, 8.5);</code>. Nel main non viene mai usato.",
+15: "<b>Copia il parametro <code>e</code> nell'attributo <code>eta</code>.</b> Il parametro è il valore ricevuto, l'attributo è la casella dell'oggetto.",
+16: "<b>Copia <code>matr</code> in <code>nmat</code>.</b>",
+17: "<b>Copia <code>m</code> in <code>media</code>.</b>",
+18: "<b>Fine del secondo costruttore.</b>",
+19: "<b>get dell'età:</b> non riceve niente e restituisce (<code>return</code>) il valore di <code>eta</code>. È <code>int</code> perché eta è int.",
+20: "<b>get della matricola:</b> restituisce <code>nmat</code>.",
+21: "<b>get della media:</b> restituisce <code>media</code>. È <code>float</code> come l'attributo.",
+23: "<b>set dell'età:</b> riceve un intero <code>e</code> e lo scrive in <code>eta</code>. <code>void</code> = non restituisce niente.",
+24: "<b>set della matricola:</b> scrive <code>matr</code> in <code>nmat</code>.",
+25: "<b>set della media:</b> scrive <code>m</code> in <code>media</code>.",
+27: "<b>Commento.</b> Tutto quello che segue <code>//</code> viene ignorato dal compilatore. Questo è un esercizio da fare: scrivere il metodo <code>promosso()</code> (soluzione nella tappa 7).",
+28: "<b>Seconda riga del commento:</b> <code>promosso()</code> deve restituire true se la media è almeno 6, altrimenti false.",
+29: "<b>Metodo visualizzadati:</b> è <code>void</code>, non restituisce niente, stampa solo i tre attributi.",
+30: "<b>Stampa il testo e poi il valore di eta.</b> Manca <code>endl</code>: la stampa successiva si attacca a questa.",
+31: "<b>Stampa la matricola</b>, sempre senza andare a capo.",
+32: "<b>Stampa la media.</b>",
+33: "<b>Fine di visualizzadati.</b>",
+35: "<b>Metodo esitofinale:</b> restituisce un <code>int</code> (1 o 0) e intanto stampa promosso o bocciato.",
+36: "<b>if (media &gt;= 6):</b> se la media è maggiore o uguale a 6 esegue il blocco tra graffe, altrimenti salta all'<code>else</code>.",
+37: "<b>Stampa «promosso».</b>",
+38: "<b>return 1;</b> il metodo finisce qui e restituisce 1.",
+39: "<b>else:</b> altrimenti, cioè se la media è minore di 6.",
+40: "<b>Stampa «bocciato».</b>",
+41: "<b>return 0;</b> il metodo finisce e restituisce 0.",
+42: "<b>Chiude l'else.</b>",
+43: "<b>Fine di esitofinale.</b>",
+44: "<b>Fine della classe.</b> Il punto e virgola dopo la graffa è obbligatorio!",
+46: "<b>int main():</b> il programma parte sempre da qui.",
+47: "<b>Variabili d'appoggio intere</b> per leggere da tastiera età e matricola. Non sono gli attributi: hanno nomi diversi apposta.",
+48: "<b>Variabile d'appoggio float</b> per leggere la media.",
+49: "<b>Crea l'oggetto Paolo.</b> Parte il costruttore senza parametri: eta, nmat e media valgono 0.",
+50: "<b>Crea l'oggetto Antonio</b>, anche lui con tutto a 0.",
+52: "<b>Stampa la domanda</b> per chi usa il programma.",
+53: "<b>Legge tre valori</b> dalla tastiera, separati da spazio o invio, e li mette in <code>e</code>, <code>matr</code> e <code>m</code>.",
+54: "<b>Copia l'età letta dentro Paolo</b> con il set. Si scrive oggetto, punto, metodo.",
+55: "<b>Copia la matricola dentro Paolo.</b>",
+56: "<b>Copia la media dentro Paolo.</b>",
+58: "<b>Stampa la domanda per Antonio.</b>",
+59: "<b>Legge i dati di Antonio</b> nelle stesse variabili. Paolo non perde niente: i suoi dati sono già dentro l'oggetto.",
+60: "<b>Copia l'età dentro Antonio.</b>",
+61: "<b>Copia la matricola dentro Antonio.</b>",
+62: "<b>Copia la media dentro Antonio.</b>",
+64: "<b>Stampa i dati di Paolo</b> chiamando il suo metodo visualizzadati.",
+65: "<b>Stampa i dati di Antonio.</b> Esce attaccato a quelli di Paolo, perché non c'è nessun a capo.",
+67: "<b>Stampa l'esito di Paolo.</b> Il numero restituito (1 o 0) non viene salvato e va perso.",
+68: "<b>Stampa l'esito di Antonio</b>, attaccato a quello di Paolo.",
+70: "<b>return 0;</b> il programma finisce senza errori.",
+71: "<b>Fine di main</b> e del programma."
+};
+
+/* esploratore riga per riga */
+(function () {
+  var pre = $("explorer"), lines = renderCode(pre, CODE, true);
+  lines.forEach(function (ln, i) {
+    var n = i + 1;
+    ln.classList.add(n >= 4 && n <= 44 ? "zone-c" : n >= 46 ? "zone-m" : "zone-x");
+    if (!EX[n]) return;
+    ln.classList.add("has"); ln.tabIndex = 0; ln.setAttribute("role", "button"); ln.setAttribute("aria-expanded", "false");
+    function toggle(force) {
+      var open = force !== undefined ? force : !ln.classList.contains("sel");
+      var nx = ln.nextElementSibling;
+      if (nx && nx.classList.contains("expl")) nx.remove();
+      ln.classList.toggle("sel", open); ln.setAttribute("aria-expanded", String(open));
+      if (open) { var d = document.createElement("span"); d.className = "expl"; d.innerHTML = EX[n]; ln.after(d); }
+    }
+    ln._toggle = toggle;
+    ln.addEventListener("click", function () { toggle(); });
+    ln.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  });
+  $("open-all").addEventListener("click", function () { lines.forEach(function (l) { if (l._toggle) l._toggle(true); }); });
+  $("close-all").addEventListener("click", function () { lines.forEach(function (l) { if (l._toggle) l._toggle(false); }); });
+})();
+
+/* versione sistemata */
+renderCode($("fixed-code"), [
+'#include <iostream>',
+'using namespace std;',
+'',
+'class studente {',
+'private:                          // 1) dati protetti',
+'    int eta, nmat;',
+'    float media;',
+'public:',
+'    studente() { eta = 0; nmat = 0; media = 0; }',
+'    studente(int e, int matr, float m) { eta = e; nmat = matr; media = m; }',
+'',
+'    int get_eta() { return eta; }',
+'    int get_nmat() { return nmat; }',
+'    float get_media() { return media; }',
+'    void set_eta(int e) { eta = e; }',
+'    void set_nmat(int matr) { nmat = matr; }',
+'    void set_media(float m) { media = m; }',
+'',
+'    bool promosso() {              // 3) il metodo del commento',
+'        return media >= 6;',
+'    }',
+'    void visualizzadati() {        // 2) con endl',
+'        cout << "eta è: " << eta << endl;',
+'        cout << "la matricola è: " << nmat << endl;',
+'        cout << "la media è: " << media << endl;',
+'    }',
+'};',
+'',
+'int main() {',
+'    int e, matr;',
+'    float m;',
+'    studente Paolo;',
+'    studente Antonio;',
+'',
+'    cout << "inserisci età, matricola e media di Paolo: ";   // 4)',
+'    cin >> e >> matr >> m;',
+'    Paolo.set_eta(e);',
+'    Paolo.set_nmat(matr);',
+'    Paolo.set_media(m);',
+'',
+'    cout << "inserisci età, matricola e media di Antonio: ";',
+'    cin >> e >> matr >> m;',
+'    Antonio.set_eta(e);',
+'    Antonio.set_nmat(matr);',
+'    Antonio.set_media(m);',
+'',
+'    Paolo.visualizzadati();',
+'    Antonio.visualizzadati();',
+'',
+'    if (Paolo.promosso()) cout << "Paolo: promosso" << endl;',
+'    else cout << "Paolo: bocciato" << endl;',
+'    if (Antonio.promosso()) cout << "Antonio: promosso" << endl;',
+'    else cout << "Antonio: bocciato" << endl;',
+'',
+'    return 0;',
+'}'
+].join("\n"), true);
+
+/* ---------------- glossario ---------------- */
+var G = {
+  "sottolineate": ["Parola toccabile", "Proprio così: le parole con questa sottolineatura si spiegano con un tocco."],
+  "classe": ["Classe", "Il progetto di un tipo di cosa: dice quali dati (attributi) e quali azioni (metodi) avrà. Si scrive <code>class nome { ... };</code>."],
+  "oggetto": ["Oggetto (o istanza)", "Una cosa vera costruita con la classe. <code>studente Paolo;</code> crea l'oggetto Paolo. Ogni oggetto ha i suoi dati."],
+  "attributo": ["Attributo", "Una variabile che sta dentro la classe. Ogni oggetto ne ha una copia sua. Qui: <code>eta</code>, <code>nmat</code>, <code>media</code>."],
+  "metodo": ["Metodo", "Una funzione che sta dentro la classe e lavora sui dati dell'oggetto. Si chiama con il punto: <code>Paolo.visualizzadati();</code>."],
+  "costruttore": ["Costruttore", "Metodo speciale con lo stesso nome della classe e senza tipo di ritorno. Parte da solo quando l'oggetto viene creato e serve a dare i valori iniziali."],
+  "overloading": ["Overloading", "Più metodi con lo stesso nome ma parametri diversi. Il compilatore sceglie quello giusto guardando cosa gli passi."],
+  "public": ["public", "Quello che è public si può usare anche da fuori la classe, per esempio da main."],
+  "private": ["private", "Quello che è private si può usare solo dentro i metodi della classe. Da main dà errore."],
+  "incapsulamento": ["Incapsulamento", "Nascondere i dati (private) e lasciarli toccare solo attraverso i metodi (public). Così nessuno li cambia per sbaglio."],
+  "int": ["int", "Tipo per i numeri interi, senza virgola: 18, 1001, -3."],
+  "float": ["float", "Tipo per i numeri con la virgola, che in C++ si scrive col punto: 7.5."],
+  "bool": ["bool", "Tipo che vale solo <code>true</code> (vero) o <code>false</code> (falso)."],
+  "void": ["void", "Vuol dire «niente»: un metodo void non restituisce nessun valore."],
+  "return": ["return", "Termina il metodo e consegna un valore a chi l'ha chiamato. <code>return eta;</code> consegna l'età."],
+  "parametro": ["Parametro", "Il valore che un metodo riceve tra le parentesi. In <code>set_eta(int e)</code> il parametro è <code>e</code>."],
+  "cout": ["cout", "Scrive sullo schermo. Si usa con le frecce <code>&lt;&lt;</code>: <code>cout &lt;&lt; \"ciao\";</code>."],
+  "cin": ["cin", "Legge dalla tastiera. Si usa con le frecce <code>&gt;&gt;</code>: <code>cin &gt;&gt; x;</code>."],
+  "endl": ["endl", "Manda a capo nella stampa: <code>cout &lt;&lt; x &lt;&lt; endl;</code>. Fa la stessa cosa di <code>\"\\n\"</code>."],
+  "commento": ["Commento", "Testo che il compilatore ignora. Inizia con <code>//</code> e serve a chi legge il codice."]
+};
+(function () {
+  var dl = $("gloss"), keys = Object.keys(G).filter(function (k) { return k !== "sottolineate"; });
+  dl.innerHTML = keys.map(function (k) { return "<dt>" + G[k][0] + "</dt><dd>" + G[k][1] + "</dd>"; }).join("");
+  var pop = $("pop"), cur = null;
+  function close() { pop.hidden = true; if (cur) { cur.setAttribute("aria-expanded", "false"); cur = null; } }
+  function open(el) {
+    var g = G[el.dataset.t]; if (!g) return;
+    if (cur === el) { close(); return; }
+    close(); cur = el; el.setAttribute("aria-expanded", "true");
+    $("pop-t").innerHTML = g[0]; $("pop-b").innerHTML = g[1]; pop.hidden = false;
+    if (innerWidth < 600) { pop.classList.add("sheet"); pop.style.left = ""; pop.style.top = ""; }
+    else {
+      pop.classList.remove("sheet");
+      var r = el.getBoundingClientRect(), w = pop.offsetWidth;
+      var left = Math.min(Math.max(12, r.left + scrollX), scrollX + innerWidth - w - 12);
+      pop.style.left = left + "px"; pop.style.top = (r.bottom + scrollY + 8) + "px";
+    }
+    pop.querySelector(".pop-x").focus({ preventScroll: true });
+  }
+  document.querySelectorAll(".term-w").forEach(function (el) {
+    el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-expanded", "false");
+    el.addEventListener("click", function (e) { e.stopPropagation(); open(el); });
+    el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(el); } });
+  });
+  pop.querySelector(".pop-x").addEventListener("click", function () { var c = cur; close(); if (c) c.focus(); });
+  pop.addEventListener("click", function (e) { e.stopPropagation(); });
+  document.addEventListener("click", close);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+})();
+
+/* ---------------- tappe e progressi ---------------- */
+var tappe = Array.prototype.slice.call(document.querySelectorAll(".tappa"));
+function refreshProgress() {
+  var n = 0;
+  tappe.forEach(function (t) { var d = !!S.done[t.dataset.tappa]; t.classList.toggle("done", d); if (d) n++; var b = t.querySelector(".done-b"); b.classList.toggle("okb", d); });
+  $("pill").textContent = n + "/" + tappe.length;
+  document.querySelectorAll("#toc-tappe a").forEach(function (a) { a.classList.toggle("ok", !!S.done[a.dataset.k]); });
+}
+$("toc-tappe").innerHTML = tappe.map(function (t) { return '<li><a href="#' + t.id + '" data-k="' + t.dataset.tappa + '"><span class="n">' + t.dataset.tappa + "</span>" + t.dataset.title + "</a></li>"; }).join("");
+tappe.forEach(function (t, i) {
+  t.querySelector(".done-b").addEventListener("click", function () {
+    S.done[t.dataset.tappa] = true; save(); refreshProgress();
+    var next = tappe[i + 1] || $("quiz");
+    next.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+refreshProgress();
+
+/* ---------------- domande a scelta multipla ---------------- */
+function wireMC(box, onAnswer) {
+  var opts = box.querySelectorAll(".opt"), ok = +box.dataset.ok, why = box.querySelector(".why"), lock = box.dataset.mode === "exam";
+  opts.forEach(function (b, i) {
+    b.addEventListener("click", function () {
+      if (box.dataset.answered && !lock) return;
+      if (lock) {
+        if (box.dataset.closed) return;
+        opts.forEach(function (o) { o.classList.remove("picked"); o.setAttribute("aria-pressed", "false"); o.style.borderColor = ""; o.style.background = ""; });
+        b.setAttribute("aria-pressed", "true"); b.style.borderColor = "var(--teal)"; b.style.background = "var(--teal-soft)";
+        box.dataset.pick = i; box.dataset.answered = "1"; if (onAnswer) onAnswer(); return;
+      }
+      box.dataset.answered = "1";
+      opts.forEach(function (o, j) { o.disabled = true; if (j === ok) o.classList.add("right"); });
+      if (i !== ok) b.classList.add("wrong");
+      if (why) {
+        why.hidden = false;
+        why.className = "why " + (i === ok ? "good" : "bad");
+        var first = why.querySelector("b");
+        if (i !== ok && first) { first.dataset.orig = first.dataset.orig || first.innerHTML; first.innerHTML = "Non è questa. La risposta giusta è quella in verde."; }
+      }
+      if (onAnswer) onAnswer(i === ok);
+    });
+  });
+}
+document.querySelectorAll(".tappa .mc").forEach(function (b) { wireMC(b); });
+
+/* banca delle domande: [domanda, codice o null, opzioni, indice giusto, spiegazione] */
+var BANK = [
+["Cos'è una classe?", null, ["Un progetto che descrive dati e metodi di un tipo di cosa", "Una variabile che contiene numeri", "Un oggetto già creato", "Una libreria come iostream"], 0, "La classe è il progetto; gli oggetti si creano a partire da lei."],
+["Nel codice, cos'è <code>Paolo</code>?", null, ["Un oggetto (istanza) della classe studente", "Una classe", "Un metodo", "Un attributo"], 0, "<code>studente Paolo;</code> crea un oggetto di tipo studente."],
+["Quali sono gli attributi della classe studente?", null, ["<code>eta</code>, <code>nmat</code>, <code>media</code>", "<code>e</code>, <code>matr</code>, <code>m</code>", "<code>Paolo</code> e <code>Antonio</code>", "<code>get_eta</code> e <code>set_eta</code>"], 0, "<code>e</code>, <code>matr</code> e <code>m</code> sono le variabili d'appoggio di main, non gli attributi."],
+["Come si riconosce un costruttore?", null, ["Ha lo stesso nome della classe e nessun tipo di ritorno", "Inizia sempre con set_", "Ha <code>void</code> davanti", "Sta dentro main"], 0, "Niente tipo, nemmeno void, e stesso nome della classe."],
+["Quale costruttore parte con <code>studente Antonio;</code>?", null, ["Quello senza parametri", "Quello con tre parametri", "Nessuno", "Tutti e due"], 0, "Non passi nessun valore, quindi parte <code>studente()</code>."],
+["Due costruttori con lo stesso nome e parametri diversi sono un esempio di...", null, ["overloading", "incapsulamento", "ereditarietà", "commento"], 0, "Stesso nome, parametri diversi: overloading."],
+["Cosa fa <code>Paolo.set_media(m);</code>?", null, ["Copia il valore di <code>m</code> nell'attributo <code>media</code> di Paolo", "Stampa la media di Paolo", "Legge la media dalla tastiera", "Restituisce la media di Paolo"], 0, "Il set scrive dentro l'oggetto il valore ricevuto."],
+["Cosa restituisce <code>get_eta()</code>?", null, ["Un int: il valore di <code>eta</code>", "Niente, è void", "Un float", "true o false"], 0, "<code>int get_eta() { return eta; }</code>"],
+["Cosa vuol dire <code>void</code> davanti a un metodo?", null, ["Il metodo non restituisce nessun valore", "Il metodo è vuoto e non fa niente", "Il metodo è private", "Il metodo restituisce 0"], 0, "void = niente valore restituito. Il metodo può comunque fare cose, come stampare."],
+["Perché gli attributi dovrebbero essere private?", null, ["Così si cambiano solo attraverso i metodi, che possono controllarli", "Perché altrimenti il programma non compila", "Per farli andare più veloci", "Per poterli stampare"], 0, "È l'incapsulamento: i dati restano protetti."],
+["Nel codice originale gli attributi sono...", null, ["public: main potrebbe modificarli direttamente", "private", "nascosti dal costruttore", "costanti"], 0, "Sopra gli attributi c'è <code>public:</code>, quindi sono accessibili da fuori."],
+["Con <code>media</code> uguale a 6, <code>esitofinale()</code> stampa...", null, ["promosso", "bocciato", "niente", "6"], 0, "La condizione è <code>media &gt;= 6</code>: 6 è uguale a 6, quindi è vera."],
+["Con <code>media</code> uguale a 5.9, <code>esitofinale()</code> restituisce...", null, ["0", "1", "true", "5.9"], 0, "5.9 è minore di 6: si va nell'else, che fa <code>return 0;</code>."],
+["Cosa fa <code>cin &gt;&gt; e &gt;&gt; matr &gt;&gt; m;</code>?", null, ["Legge tre valori dalla tastiera e li mette in e, matr e m", "Stampa e, matr e m", "Copia e, matr e m dentro Paolo", "Confronta tre numeri"], 0, "cin legge; le frecce indicano dove vanno i dati."],
+["Perché la stampa di <code>visualizzadati()</code> esce tutta attaccata?", null, ["Perché mancano <code>endl</code> o <code>\"\\n\"</code> per andare a capo", "Perché cout non stampa gli int", "Perché il metodo è void", "Perché manca return"], 0, "cout va a capo solo se glielo dici tu."],
+["Che tipo dovrebbe restituire il metodo <code>promosso()</code> del commento?", null, ["bool", "int", "void", "float"], 0, "Deve rispondere true o false: è un bool."],
+["Come si chiama il metodo visualizzadati sull'oggetto Paolo?", null, ["<code>Paolo.visualizzadati();</code>", "<code>visualizzadati(Paolo);</code>", "<code>studente.visualizzadati();</code>", "<code>Paolo:visualizzadati;</code>"], 0, "Oggetto, punto, metodo, parentesi e punto e virgola."],
+["In <code>studente(int e, int matr, float m)</code>, cosa sono <code>e</code>, <code>matr</code> e <code>m</code>?", null, ["Parametri: i valori che il costruttore riceve", "Attributi della classe", "Oggetti", "Variabili globali"], 0, "Sono tra le parentesi del metodo: parametri."],
+["A cosa serve <code>#include &lt;iostream&gt;</code>?", null, ["A poter usare cin e cout", "A creare la classe", "A far partire main", "A dichiarare gli attributi"], 0, "iostream = input/output stream: entrata e uscita."],
+["A cosa serve <code>using namespace std;</code>?", null, ["A scrivere cout invece di std::cout", "A includere iostream", "A rendere public la classe", "A chiudere il programma"], 0, "Senza, dovresti scrivere <code>std::cout</code> e <code>std::cin</code>."],
+["Cosa crea <code>studente Luca(19, 3003, 8.5);</code>?", null, ["Luca con età 19, matricola 3003, media 8.5", "Un errore: quel costruttore non esiste", "Luca con tutto a 0", "Tre studenti diversi"], 0, "Parte il costruttore con tre parametri, che copia i valori negli attributi."],
+["Paolo e Antonio hanno gli stessi attributi?", null, ["No: ognuno ha la sua copia di eta, nmat e media", "Sì: condividono le stesse caselle", "Solo la media è condivisa", "Dipende da main"], 0, "Ogni oggetto ha i propri dati."],
+["Il numero restituito da <code>Paolo.esitofinale();</code> in main...", null, ["Va perso, perché non viene salvato né stampato", "Viene stampato automaticamente", "Finisce in <code>media</code>", "Dà errore"], 0, "Per usarlo bisognerebbe scrivere ad esempio <code>int r = Paolo.esitofinale();</code>."],
+["Cosa manca? <code>class studente { ... }</code>", null, ["Il punto e virgola dopo la graffa", "La parola public", "Il return", "Le parentesi tonde"], 0, "La classe si chiude con <code>};</code>."],
+["Cosa stampa questo codice?", "studente x;\nx.visualizzadati();", ["<code>eta è: 0la matricola è: 0la media è: 0</code>", "Niente", "Numeri a caso", "Errore di compilazione"], 0, "Il costruttore senza parametri mette tutto a 0, e non ci sono a capo."],
+["Cosa stampa questo codice?", "studente y(20, 5, 6);\ncout << y.get_media() + 1;", ["7", "6", "61", "21"], 0, "get_media() restituisce 6, più 1 fa 7."],
+["Cosa stampa questo codice?", "studente a(18, 1, 7);\nstudente b(18, 2, 4);\na.esitofinale();\nb.esitofinale();", ["<code>promossobocciato</code>", "<code>promosso bocciato</code>", "<code>10</code>", "<code>bocciatopromosso</code>"], 0, "Prima a (7, promosso) poi b (4, bocciato), tutto attaccato."],
+["Cosa stampa questo codice?", "studente z;\nz.set_eta(16);\nz.set_eta(17);\ncout << z.get_eta();", ["17", "16", "1617", "0"], 0, "Il secondo set sovrascrive il primo."],
+["Cosa stampa questo codice?", "studente p(19, 7, 5.5);\nif (p.get_media() >= 6) cout << \"ok\";\nelse cout << \"no\";", ["no", "ok", "5.5", "niente"], 0, "5.5 non è maggiore o uguale a 6."]
+];
+function mcHTML(q, idx, mode) {
+  var order = shuffle(q[2].map(function (t, i) { return i; }));
+  var ok = order.indexOf(q[3]);
+  var code = q[1] ? '<pre class="code plain">' + esc(q[1]) + "</pre>" : "";
+  return '<div class="mc"' + (mode ? ' data-mode="' + mode + '"' : "") + ' data-ok="' + ok + '"><p class="q"><span class="qn">' + (idx + 1) + ".</span>" + q[0] + "</p>" + code +
+    '<div class="opts">' + order.map(function (i) { return '<button class="opt" type="button">' + q[2][i] + "</button>"; }).join("") + "</div>" +
+    '<p class="why" hidden><b>Giusto.</b>' + q[4] + "</p></div>";
+}
+function hlIn(root) { root.querySelectorAll("pre.code.plain").forEach(function (pre) { renderCode(pre, pre.textContent, false); }); }
+
+/* quiz veloce */
+function newQuiz() {
+  var list = $("quiz-list"), qs = shuffle(BANK).slice(0, 12), right = 0, done = 0;
+  list.innerHTML = qs.map(function (q, i) { return mcHTML(q, i); }).join("");
+  hlIn(list);
+  $("quiz-score").textContent = "0/12";
+  list.querySelectorAll(".mc").forEach(function (b) {
+    wireMC(b, function (ok) { done++; if (ok) right++; $("quiz-score").textContent = right + "/12" + (done === 12 ? (right >= 10 ? " · ottimo!" : right >= 7 ? " · bene" : " · ripassa le tappe") : ""); });
+  });
+}
+$("quiz-new").addEventListener("click", newQuiz);
+newQuiz();
+
+/* ---------------- completa il codice ---------------- */
+var FILL = [
+  "class studente {\n", ["private"], ":\n    int eta, nmat;\n    float media;\npublic:\n    ", ["studente"], "() { eta = 0; nmat = 0; media = 0; }\n\n    ",
+  ["float"], " get_media() { ", ["return"], " media; }\n    ", ["void"], " set_eta(", ["int"], " e) { eta = e; }\n\n    ",
+  ["bool"], " promosso() { return media ", [">="], " 6; }\n", ["};"], "\n\nint main() {\n    int e;\n    studente Paolo;\n    cin ", [">>"], " e;\n    Paolo", ["."],
+  "set_eta(e);\n    cout ", ["<<"], " Paolo.get_media() << ", ["endl"], ";\n    return 0;\n}"
+];
+(function () {
+  var box = $("fill"), html = "", n = 0;
+  FILL.forEach(function (p) {
+    if (typeof p === "string") html += esc(p);
+    else { html += '<input type="text" autocapitalize="off" autocomplete="off" spellcheck="false" aria-label="casella ' + (++n) + '" data-a="' + esc(p.join("|")) + '" style="width:' + Math.max(4, p[0].length + 2) + 'ch">'; }
+  });
+  box.innerHTML = html;
+  var inputs = box.querySelectorAll("input");
+  $("fill-check").addEventListener("click", function () {
+    var r = 0;
+    inputs.forEach(function (i) { var ok = i.dataset.a.split("|").indexOf(i.value.trim()) >= 0; i.classList.toggle("right", ok); i.classList.toggle("wrong", !ok); if (ok) r++; });
+    $("fill-score").textContent = r + " giuste su " + inputs.length + (r === inputs.length ? ": perfetto!" : ". Quelle rosse sono da rivedere.");
+  });
+  $("fill-show").addEventListener("click", function () { inputs.forEach(function (i) { i.value = i.dataset.a.split("|")[0]; i.classList.add("right"); i.classList.remove("wrong"); }); $("fill-score").textContent = "Ecco le soluzioni. Svuota e riprova da solo."; });
+  $("fill-clear").addEventListener("click", function () { inputs.forEach(function (i) { i.value = ""; i.classList.remove("right", "wrong"); }); $("fill-score").textContent = ""; });
+})();
+
+/* ---------------- trova l'errore ---------------- */
+var BUGS = [
+  ["class persona {\npublic:\n    int eta;\n}\n\nint main() {\n    persona p;\n}", 3, "Manca il punto e virgola dopo la graffa che chiude la classe: <code>};</code>."],
+  ["class studente {\n    float media;\npublic:\n    void studente() {\n        media = 0;\n    }\n};", 3, "Il costruttore non ha tipo di ritorno: va scritto <code>studente()</code>, senza <code>void</code>."],
+  ["int main() {\n    int e;\n    studente Paolo;\n    cin << e;\n    Paolo.set_eta(e);\n    return 0;\n}", 3, "Con cin le frecce vanno verso la variabile: <code>cin &gt;&gt; e;</code>."],
+  ["int main() {\n    studente Paolo;\n    set_eta(18);\n    Paolo.visualizzadati();\n    return 0;\n}", 2, "Manca l'oggetto: <code>Paolo.set_eta(18);</code>. Un metodo si chiama sempre su un oggetto."],
+  ["class studente {\nprivate:\n    float media;\npublic:\n    void set_media(float m) { media = m; }\n};\nint main() {\n    studente Paolo;\n    Paolo.media = 7;\n}", 8, "<code>media</code> è private: da main non si può toccare. Si usa <code>Paolo.set_media(7);</code>."],
+  ["class studente {\n    float media;\npublic:\n    float get_media() { media; }\n    void set_media(float m) { media = m; }\n};", 3, "Nel get manca <code>return</code>: va scritto <code>{ return media; }</code>."],
+  ["class studente {\n    float media;\npublic:\n    bool promosso() {\n        if (media > 6) return true;\n        else return false;\n    }\n};", 4, "Con <code>&gt;</code> chi ha 6 esatto risulta bocciato. Serve <code>media &gt;= 6</code>."]
+];
+(function () {
+  var list = $("bug-list");
+  BUGS.forEach(function (b, k) {
+    var wrap = document.createElement("div"); wrap.className = "mc";
+    wrap.innerHTML = '<p class="q"><span class="qn">' + (k + 1) + ".</span>Quale riga è sbagliata?</p>";
+    var pre = document.createElement("pre"); pre.className = "code bug"; wrap.appendChild(pre);
+    var why = document.createElement("p"); why.className = "why"; why.hidden = true; wrap.appendChild(why);
+    var again = document.createElement("button"); again.className = "btn ghost"; again.type = "button"; again.textContent = "Riprova"; again.hidden = true; again.style.justifySelf = "start"; wrap.appendChild(again);
+    list.appendChild(wrap);
+    var lines = renderCode(pre, b[0], true);
+    lines.forEach(function (ln, i) {
+      ln.tabIndex = 0; ln.setAttribute("role", "button");
+      function pick() {
+        if (pre.classList.contains("locked")) return;
+        pre.classList.add("locked");
+        lines[b[1]].classList.add("right");
+        if (i !== b[1]) ln.classList.add("wrong");
+        why.hidden = false; why.className = "why " + (i === b[1] ? "good" : "bad");
+        why.innerHTML = "<b>" + (i === b[1] ? "Trovato!" : "No, l'errore è alla riga " + (b[1] + 1) + " (in verde).") + "</b>" + b[2];
+        again.hidden = false;
+      }
+      ln.addEventListener("click", pick);
+      ln.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+    });
+    again.addEventListener("click", function () { pre.classList.remove("locked"); lines.forEach(function (l) { l.classList.remove("right", "wrong"); }); why.hidden = true; again.hidden = true; });
+  });
+})();
+
+/* ---------------- scrivi tu ---------------- */
+function strip(s) { return s.replace(/\/\/.*$/gm, "").replace(/\s+/g, " "); }
+var WRITE = [
+  { t: "Scrivi il metodo <code>promosso()</code> del commento: restituisce true se la media è maggiore o uguale a 6, false altrimenti.",
+    ph: "bool promosso() {\n    \n}",
+    checks: [
+      ["Il metodo si chiama promosso e restituisce bool", /bool\s+promosso\s*\(\s*\)/],
+      ["Non riceve parametri (parentesi vuote)", /promosso\s*\(\s*\)/],
+      ["Controlla media >= 6", /media\s*>=\s*6/],
+      ["Usa return", /\breturn\b/],
+      ["Restituisce true o false (o direttamente il confronto)", function (s) { return (/\btrue\b/.test(s) && /\bfalse\b/.test(s)) || /return\s*\(?\s*media\s*>=\s*6/.test(s); }],
+      ["Graffe aperte e chiuse in numero uguale", function (s) { return (s.match(/\{/g) || []).length === (s.match(/\}/g) || []).length && /\{/.test(s); }]
+    ],
+    sol: "bool promosso() {\n    if (media >= 6)\n        return true;\n    else\n        return false;\n}" },
+  { t: "Nel main, crea l'oggetto <code>Luca</code> con età 19, matricola 3003 e media 8.5 usando il <b>costruttore con parametri</b>, poi stampa i suoi dati.",
+    ph: "int main() {\n    \n    return 0;\n}",
+    checks: [
+      ["Crea Luca con il costruttore a tre parametri", /studente\s+Luca\s*\(\s*19\s*,\s*3003\s*,\s*8\.5\s*\)\s*;/],
+      ["I valori sono nell'ordine giusto: età, matricola, media", /\(\s*19\s*,\s*3003\s*,\s*8\.5\s*\)/],
+      ["Chiama visualizzadati su Luca", /Luca\s*\.\s*visualizzadati\s*\(\s*\)\s*;/],
+      ["Non usa i set (non servono: fa tutto il costruttore)", function (s) { return !/Luca\s*\.\s*set_/.test(s); }]
+    ],
+    sol: "int main() {\n    studente Luca(19, 3003, 8.5);\n    Luca.visualizzadati();\n    return 0;\n}" },
+  { t: "Riscrivi <code>set_media</code> in modo che accetti la media solo se è tra 0 e 10. Altrimenti stampa «media non valida».",
+    ph: "void set_media(float m) {\n    \n}",
+    checks: [
+      ["Intestazione: void set_media(float ...)", /void\s+set_media\s*\(\s*float\s+\w+\s*\)/],
+      ["Usa un if", /\bif\s*\(/],
+      ["Controlla che sia almeno 0", /(>=\s*0\b)|(0\s*<=)/],
+      ["Controlla che sia al massimo 10", /(<=\s*10\b)|(10\s*>=)/],
+      ["Unisce le due condizioni con && (oppure usa || al contrario)", /&&|\|\|/],
+      ["Copia il valore nell'attributo media", /media\s*=\s*\w+\s*;/],
+      ["Stampa il messaggio di errore con cout", /cout\s*<</]
+    ],
+    sol: "void set_media(float m) {\n    if (m >= 0 && m <= 10)\n        media = m;\n    else\n        cout << \"media non valida\" << endl;\n}" },
+  { t: "Nel main, dopo aver riempito Paolo, stampa «Paolo è promosso» oppure «Paolo è bocciato» usando il metodo <code>promosso()</code>.",
+    ph: "",
+    checks: [
+      ["Usa un if", /\bif\s*\(/],
+      ["Chiama Paolo.promosso()", /Paolo\s*\.\s*promosso\s*\(\s*\)/],
+      ["Ha un else", /\belse\b/],
+      ["Stampa con cout", /cout\s*<</],
+      ["Non confronta di nuovo la media (ci pensa promosso)", function (s) { return !/media\s*>=/.test(s); }]
+    ],
+    sol: "if (Paolo.promosso())\n    cout << \"Paolo è promosso\" << endl;\nelse\n    cout << \"Paolo è bocciato\" << endl;" }
+];
+(function () {
+  var list = $("write-list");
+  WRITE.forEach(function (w, k) {
+    var d = document.createElement("div"); d.className = "mc";
+    d.innerHTML = '<p class="q"><span class="qn">' + (k + 1) + ".</span>" + w.t + '</p><textarea class="write" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Il tuo codice per l\'esercizio ' + (k + 1) + '"></textarea>' +
+      '<div class="btnrow"><button class="btn" type="button">Controlla</button><button class="btn ghost" type="button">Mostra la soluzione</button></div><ul class="checks" hidden></ul><div class="sol" hidden><div class="term-h">Soluzione</div><pre class="code plain"></pre></div>';
+    list.appendChild(d);
+    var ta = d.querySelector("textarea"), ul = d.querySelector(".checks"), bs = d.querySelectorAll(".btn"), sol = d.querySelector(".sol");
+    ta.value = w.ph;
+    ta.addEventListener("keydown", function (e) { if (e.key === "Tab") { e.preventDefault(); var s = ta.selectionStart; ta.setRangeText("    ", s, ta.selectionEnd, "end"); } });
+    sol.querySelector("pre").textContent = w.sol; renderCode(sol.querySelector("pre"), w.sol, false);
+    bs[0].addEventListener("click", function () {
+      var s = strip(ta.value), all = true;
+      ul.innerHTML = w.checks.map(function (c) { var ok = typeof c[1] === "function" ? c[1](s) : c[1].test(s); if (!ok) all = false; return '<li class="' + (ok ? "y" : "n") + '">' + c[0] + "</li>"; }).join("") +
+        (all ? '<li class="y"><b>Tutto a posto! Confronta comunque con la soluzione.</b></li>' : "");
+      ul.hidden = false;
+    });
+    bs[1].addEventListener("click", function () { sol.hidden = !sol.hidden; bs[1].textContent = sol.hidden ? "Mostra la soluzione" : "Nascondi la soluzione"; });
+  });
+})();
+
+/* ---------------- verifica simulata ---------------- */
+var VER = [];
+function newVer() {
+  var list = $("ver-list");
+  var theory = BANK.filter(function (q) { return !q[1]; }), out = BANK.filter(function (q) { return q[1]; });
+  var bugsAsMC = BUGS.map(function (b) {
+    var lines = b[0].split("\n"), opts = [b[1]], cand = shuffle(lines.map(function (l, i) { return i; }).filter(function (i) { return i !== b[1] && lines[i].trim().length > 2; })).slice(0, 3);
+    opts = opts.concat(cand);
+    return ["Quale riga contiene l'errore?", b[0], opts.map(function (i) { return "riga " + (i + 1) + ": <code>" + esc(lines[i].trim()) + "</code>"; }), 0, b[2]];
+  });
+  VER = shuffle(shuffle(theory).slice(0, 6).concat(shuffle(out).slice(0, 2), shuffle(bugsAsMC).slice(0, 2)));
+  list.innerHTML = VER.map(function (q, i) { return mcHTML(q, i, "exam"); }).join("");
+  list.querySelectorAll("pre.code.plain").forEach(function (pre) { renderCode(pre, pre.textContent, pre.closest(".mc").querySelector(".q").textContent.indexOf("riga") >= 0); pre.classList.toggle("plain", false); });
+  list.querySelectorAll(".mc").forEach(function (b) { wireMC(b, countVer); });
+  $("ver-grade").hidden = true; $("ver-send").disabled = false; countVer();
+}
+function countVer() { var n = $("ver-list").querySelectorAll(".mc[data-answered]").length; $("ver-count").textContent = n + "/10 risposte"; }
+$("ver-new").addEventListener("click", function () { newVer(); $("verifica").scrollIntoView({ behavior: "smooth" }); });
+$("ver-send").addEventListener("click", function () {
+  var boxes = $("ver-list").querySelectorAll(".mc"), pts = 0, miss = 0;
+  boxes.forEach(function (b) { if (!b.dataset.answered) miss++; });
+  if (miss && !confirmMiss(miss)) return;
+  boxes.forEach(function (b) {
+    b.dataset.closed = "1";
+    var ok = +b.dataset.ok, pick = b.dataset.pick !== undefined ? +b.dataset.pick : -1, opts = b.querySelectorAll(".opt"), why = b.querySelector(".why");
+    opts.forEach(function (o, j) { o.disabled = true; o.style.borderColor = ""; o.style.background = ""; if (j === ok) o.classList.add("right"); else if (j === pick) o.classList.add("wrong"); });
+    if (pick === ok) pts++;
+    why.hidden = false; why.className = "why " + (pick === ok ? "good" : "bad");
+    why.querySelector("b").textContent = pick === ok ? "Giusto, 1 punto." : pick < 0 ? "Senza risposta, 0 punti." : "Sbagliato, 0 punti.";
+  });
+  var msg = pts === 10 ? "Perfetto: sei pronto." : pts >= 8 ? "Molto bene. Rileggi solo le domande in rosso." : pts >= 6 ? "Sufficiente. Ripassa le tappe legate agli errori e rifai una verifica." : "Ancora da preparare: rifai le tappe con calma, poi riprova.";
+  var g = $("ver-grade"); g.hidden = false;
+  g.innerHTML = '<span class="big">' + pts + "/10</span><span>" + msg + '</span><button class="btn" type="button" id="ver-again">Nuova verifica</button>';
+  $("ver-again").addEventListener("click", function () { newVer(); $("verifica").scrollIntoView({ behavior: "smooth" }); });
+  $("ver-send").disabled = true;
+  g.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+var missArmed = false;
+function confirmMiss(n) {
+  if (missArmed) { missArmed = false; return true; }
+  missArmed = true;
+  $("ver-count").textContent = "Mancano " + n + " risposte. Premi di nuovo «Consegna» per consegnare lo stesso.";
+  return false;
+}
+newVer();
+
+/* ---------------- il programma passo passo ---------------- */
+function fmtFloat(x) { var f = Math.fround(x); if (f === 0) return "0"; var s = String(parseFloat(f.toPrecision(6))); return s; }
+function readNum(id, isFloat, label) {
+  var raw = $(id).value.trim().replace(",", ".");
+  if (!/^-?\d+(\.\d+)?$/.test(raw)) throw label + ": scrivi un numero" + (isFloat ? " (anche con la virgola, ad esempio 7.5)." : " intero.");
+  if (!isFloat && raw.indexOf(".") >= 0) throw label + ": deve essere un numero intero.";
+  return isFloat ? parseFloat(raw) : parseInt(raw, 10);
+}
+var steps = [], si = 0;
+function buildSteps() {
+  var P, A;
+  try {
+    P = [readNum("in-pe", false, "Età di Paolo"), readNum("in-pm", false, "Matricola di Paolo"), readNum("in-pv", true, "Media di Paolo")];
+    A = [readNum("in-ae", false, "Età di Antonio"), readNum("in-am", false, "Matricola di Antonio"), readNum("in-av", true, "Media di Antonio")];
+    $("in-err").hidden = true;
+  } catch (err) { $("in-err").textContent = err; $("in-err").hidden = false; return false; }
+  var st = { v: { e: "?", matr: "?", m: "?" }, o: {}, out: "" }, list = [];
+  function clone(s) { return JSON.parse(JSON.stringify(s)); }
+  function push(line, say, chg) { list.push({ line: line, say: say, st: clone(st), chg: chg || [] }); }
+  var inStr = function (x) { return x[0] + " " + x[1] + " " + fmtFloat(x[2]); };
+  push(46, "Il programma parte sempre da <code>main</code>.");
+  push(47, "Nascono le variabili <code>e</code> e <code>matr</code>. Non hanno ancora un valore: dentro c'è un numero a caso (lo indichiamo con ?).", ["v.e", "v.matr"]);
+  push(48, "Nasce la variabile <code>m</code>, per la media.", ["v.m"]);
+  st.o.Paolo = { eta: 0, nmat: 0, media: 0 };
+  push(49, "Nasce l'oggetto <b>Paolo</b>. Parte da solo il costruttore senza parametri (righe 9-13), che mette tutto a 0.", ["o.Paolo.eta", "o.Paolo.nmat", "o.Paolo.media"]);
+  st.o.Antonio = { eta: 0, nmat: 0, media: 0 };
+  push(50, "Nasce l'oggetto <b>Antonio</b>, anche lui con tutto a 0. Ora ci sono due oggetti separati.", ["o.Antonio.eta", "o.Antonio.nmat", "o.Antonio.media"]);
+  [["Paolo", P, 52], ["Antonio", A, 58]].forEach(function (x) {
+    var nm = x[0], d = x[1], L = x[2], o = st.o[nm];
+    st.out += "inserisci età, matricola e media di " + nm + "!";
+    push(L, "Compare la domanda sullo schermo. Notare: non c'è spazio dopo il punto esclamativo.");
+    st.out += "<in>" + inStr(d) + "</in>\n";
+    st.v.e = d[0]; st.v.matr = d[1]; st.v.m = fmtFloat(d[2]);
+    push(L + 1, "<code>cin</code> aspetta che l'utente scriva: «" + inStr(d) + "» e invio. I tre valori finiscono in <code>e</code>, <code>matr</code> e <code>m</code>." + (nm === "Antonio" ? " I vecchi valori di Paolo nelle variabili vengono sovrascritti, ma dentro l'oggetto Paolo sono al sicuro." : ""), ["v.e", "v.matr", "v.m"]);
+    o.eta = d[0]; push(L + 2, "Si salta dentro <code>set_eta</code> (riga 23): il valore di <code>e</code> viene copiato nell'attributo <code>eta</code> di " + nm + ".", ["o." + nm + ".eta"]);
+    o.nmat = d[1]; push(L + 3, "<code>set_nmat</code> (riga 24) copia <code>matr</code> nella matricola di " + nm + ".", ["o." + nm + ".nmat"]);
+    o.media = fmtFloat(d[2]); push(L + 4, "<code>set_media</code> (riga 25) copia <code>m</code> nella media di " + nm + ". " + nm + " ora è compilato.", ["o." + nm + ".media"]);
+  });
+  ["Paolo", "Antonio"].forEach(function (nm, k) {
+    var o = st.o[nm];
+    st.out += "eta è: " + o.eta + "la matricola è: " + o.nmat + "la media è: " + o.media;
+    push(64 + k, "Si entra in <code>visualizzadati</code> di " + nm + " (righe 29-33): tre cout senza a capo." + (k ? " Ecco perché i dati di Antonio si attaccano a quelli di Paolo." : ""));
+  });
+  [["Paolo", P], ["Antonio", A]].forEach(function (x, k) {
+    var nm = x[0], med = Math.fround(x[1][2]), prom = med >= 6;
+    st.out += prom ? "promosso" : "bocciato";
+    push(67 + k, "Si entra in <code>esitofinale</code> di " + nm + ": la media è " + fmtFloat(med) + ", e " + fmtFloat(med) + (prom ? " &gt;= 6 è vero → stampa «promosso» e restituisce 1" : " &gt;= 6 è falso → va nell'else, stampa «bocciato» e restituisce 0") + ". Il numero restituito non viene salvato.");
+  });
+  push(70, "<code>return 0;</code> il programma è finito senza errori. Guarda lo schermo: è tutto su poche righe attaccate. Nella tappa 10 vedi come sistemarlo.");
+  steps = list; return true;
+}
+var traceLines = renderCode($("trace-code"), CODE, true);
+function showStep() {
+  var s = steps[si]; if (!s) return;
+  traceLines.forEach(function (l) { l.classList.remove("cur"); });
+  var cur = traceLines[s.line - 1]; cur.classList.add("cur");
+  var box = $("trace-code"); box.scrollTop = Math.max(0, cur.offsetTop - box.clientHeight / 2);
+  $("tr-say").innerHTML = '<span class="stepn">Passo ' + (si + 1) + " di " + steps.length + " · riga " + s.line + "</span>" + s.say;
+  function has(k) { return s.chg.indexOf(k) >= 0; }
+  $("tr-vars").innerHTML = ["e", "matr", "m"].map(function (k) { return '<span class="var' + (has("v." + k) ? " chg" : "") + '">' + k + " = " + (si === 0 ? "—" : s.st.v[k]) + "</span>"; }).join("");
+  var names = Object.keys(s.st.o);
+  $("tr-objs").innerHTML = names.length ? names.map(function (nm) {
+    var o = s.st.o[nm];
+    return '<div class="obj"><div class="obj-h">' + nm + " <small>oggetto studente</small></div><table>" + ["eta", "nmat", "media"].map(function (k) { return "<tr><td>" + k + '</td><td class="' + (has("o." + nm + "." + k) ? "chg" : "") + '">' + o[k] + "</td></tr>"; }).join("") + "</table></div>";
+  }).join("") : '<span class="var">ancora nessun oggetto</span>';
+  $("tr-out").innerHTML = esc(s.st.out).replace(/&lt;in&gt;/g, '<span class="in">').replace(/&lt;\/in&gt;/g, "</span>") || " ";
+  $("tr-prev").disabled = si === 0; $("tr-next").disabled = si === steps.length - 1;
+}
+function rebuild(keepEnd) { if (buildSteps()) { si = keepEnd ? steps.length - 1 : 0; showStep(); } }
+["in-pe", "in-pm", "in-pv", "in-ae", "in-am", "in-av"].forEach(function (id) { $(id).addEventListener("change", function () { rebuild(false); }); });
+$("tr-reset").addEventListener("click", function () { rebuild(false); });
+$("tr-prev").addEventListener("click", function () { if (si > 0) { si--; showStep(); } });
+$("tr-next").addEventListener("click", function () { if (si < steps.length - 1) { si++; showStep(); } });
+$("tr-end").addEventListener("click", function () { si = steps.length - 1; showStep(); });
+rebuild(false);
+
+})();
+</script>
+</body>
+</html>
